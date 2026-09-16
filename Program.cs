@@ -1,51 +1,47 @@
 ﻿Console.WriteLine("Please enter a string");
 string input = Console.ReadLine();
 
+List<long> correctNumbers = new List<long>();
 
 for (int i = 0; i < input.Length; i++)
 {
-    if (!char.IsDigit(input[i]))
+    // börja loopen där värde på indexen är ett tal 
+    if (char.IsDigit(input[i]))
     {
-        continue;
-    }
-
-    string number = string.Empty;
-    int j = i;
-    for (; j < input.Length && char.IsDigit(input[j]); j++)
-    {
-        number += input[j];
-    }
-
-    bool isValid = number[0] == number[number.Length - 1];
-
-    for(int k = 1; k < number.Length - 1; k++)
-    {
-        if (number[k] == number[0])
+        // Den här loopen letar framåt i strängen från tecknet efter input[i] så länge nästa talet är ett tal. 
+        for (int j = 1 + i; j < input.Length; j++)
         {
-            isValid = false;
-            break;
+            if (!char.IsDigit(input[j]))
+            {
+                break;
+            } 
+            // om nuvarande talet är lika med input[i], vi loopar igenom sträng igen och byter färgen på allt
+            // där i mellan till rött och resten till grå, samtidigt lägger till korrekta tal i en sträng för att senare
+            // ska läggas till correctNumbers listan.
+            if (input[i] == input[j])
+            {
+                string substring = string.Empty;
+                for (int k = 0; k < input.Length; k++)
+                {
+                    if (k >= i && k <= j)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        substring += input[k];
+                        
+                    } else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                    Console.Write(input[k]);
+                }
+                correctNumbers.Add(long.Parse(substring));
+                Console.WriteLine();
+                break;
+            }
         }
     }
-
-    if (isValid)
-    {
-        for (int k = 0; k < input.Length; k++)
-        {
-            if (k >= i && k < j)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-
-            Console.Write(input[k]);
-        }
-
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Gray;
-    }
-
 }
 
+// Skriver ut summan av hittade siffror.
+long sum = correctNumbers.Sum();
+Console.WriteLine($"Summan är {sum}");
