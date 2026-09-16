@@ -1,4 +1,4 @@
-﻿Console.WriteLine("Please enter a string");
+﻿Console.WriteLine("Ange en sträng...!");
 string input = Console.ReadLine();
 
 List<long> correctNumbers = new List<long>();
